@@ -27,12 +27,27 @@ def recursive_mat_chain(p, i, j, use_memoization=False):
     x = recur(i,j)
     return recur(i,j)
 
+
+def iterative_mat_chain(p):
+    n = len(p) - 1 # number of matrices
+    m = [[float('inf') for _ in range(n+1)] for _ in range(n+1)] # +1 is again for compatibility with the dimensions array p
+    for i in range(n+1):
+        m[i][i] = 0
+    for l in range(2, n+1): # l is the chain length
+        for i in range(1, n-l+2): # i is the starting matrix
+            j = i+l-1 # j is the ending matrix
+            for k in range(i, j):
+                m[i][j] = min(
+                    m[i][j],
+                    m[i][k] + m[k+1][j] + p[i-1]*p[k]*p[j]
+                )
+    return m[1][n]
     
 
 if __name__ == '__main__':
     # p0, p1, ..., pn where matrix Ai has dimensions p[i-1] x p[i]
 
-    dimensions = [random.randint(1, 100) for _ in range(17)]
+    dimensions = [random.randint(1, 100) for _ in range(500+1)]
     print(dimensions)
 
     import time
@@ -40,10 +55,17 @@ if __name__ == '__main__':
     start = time.time()
     print(recursive_mat_chain(dimensions, 1, len(dimensions)-1, use_memoization=True))
     end = time.time()
-    print("Time taken with memoization: ", end-start)
+    print("Time taken with recursive memoization: ", end-start)
 
     start = time.time()
-    print(recursive_mat_chain(dimensions, 1, len(dimensions)-1))
+    print(iterative_mat_chain(dimensions))
     end = time.time()
-    print("Time taken without memoization: ", end-start)
+    print("Time taken with iterative: ", end-start)
+
+    # start = time.time()
+    # print(recursive_mat_chain(dimensions, 1, len(dimensions)-1))
+    # end = time.time()
+    # print("Time taken with recursive without memoization: ", end-start)
+
+
     
