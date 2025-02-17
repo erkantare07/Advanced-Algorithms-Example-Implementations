@@ -33,6 +33,7 @@ def iterative_mat_chain(p):
     m = [[float('inf') for _ in range(n+1)] for _ in range(n+1)] # +1 is again for compatibility with the dimensions array p
     for i in range(n+1):
         m[i][i] = 0
+    # first start with smaller chains and build up to the larger chains. This is important because we need smaller chains to compute the larger chains.
     for l in range(2, n+1): # l is the chain length
         for i in range(1, n-l+2): # i is the starting matrix
             j = i+l-1 # j is the ending matrix
