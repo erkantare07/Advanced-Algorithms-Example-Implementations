@@ -3,7 +3,7 @@
 import time
 import random
 
-# Iterative approach
+# Iterative approach - O(n)
 def find_max_min(N):
     max = N[0]
     min = N[0]
@@ -14,7 +14,7 @@ def find_max_min(N):
             min = N[i]
     return max, min
 
-# Divide and Conquer approach
+# Divide and Conquer approach - O(n)
 def find_max_min_dc(N, l, r):
     if l == r:
         return N[l], N[l]
