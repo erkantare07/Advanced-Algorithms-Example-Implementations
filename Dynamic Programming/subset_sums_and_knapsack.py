@@ -8,7 +8,7 @@ import random
 def recursive_subset_sum(W, Wmax, n, use_memoization=False): # W is the set of non-negative integers, target is the sum to be achieved, n is the number of elements in the set
     M = [[[] for _ in range(Wmax+1)] for _ in range(n+1)] # memo[n][target] will store the subset with sum closest to target for the first n elements of W
 
-    def recur(W, target, n):
+    def recur(W, target, n): # n is the number of elements in the set
         if target <= 0 or n == 0:
             return []
 
@@ -19,7 +19,7 @@ def recursive_subset_sum(W, Wmax, n, use_memoization=False): # W is the set of n
             return recur(W, target, n-1) # exclude the current element
 
         exclude = recur(W, target, n-1) # exclude the current element
-        include = [W[n-1]] + recur(W, target - W[n-1], n-1) # include the current element
+        include = [W[n-1]] + recur(W, target - W[n-1], n-1) # include the current element - (n-1) because we are 0-indexed
 
         best = max(exclude, include, key=sum)
         M[n][target] = best
@@ -43,7 +43,7 @@ def iterative_subset_sum(W, Wmax, n):
                 M[i][j] = M[i-1][j]
             else:
                 exclude = M[i-1][j]
-                include = [W[i-1]] + M[i-1][j - W[i-1]]
+                include = [W[i-1]] + M[i-1][j - W[i-1]] # include the current element - (i-1) because we are 0-indexed
                 M[i][j] = max(exclude, include, key=sum)
     
     return M[n][Wmax]
